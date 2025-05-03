@@ -2931,7 +2931,8 @@
             // Initialize counters
             let addedCount = 0;
             let alreadyInGameCount = 0;
-            let seatsAvailable = 10 - appData.games[day].players.length;
+            let reserveCount = 0;
+            let currentPlayerCount = appData.games[day].players.length;
             
             // Process each player
             playerIds.forEach(playerId => {
@@ -2945,13 +2946,14 @@
                     return;
                 }
                 
-                // Skip if no more seats available
-                if (seatsAvailable <= 0) return;
+                // Check if this player will be a reserve (over 10 players)
+                if (currentPlayerCount + addedCount >= 10) {
+                    reserveCount++;
+                }
                 
-                // Add player to the game
+                // Add player to the game (no limit)
                 appData.games[day].players.push(playerId);
                 addedCount++;
-                seatsAvailable--;
             });
             
             // Show summary message
