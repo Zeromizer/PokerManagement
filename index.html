@@ -553,9 +553,9 @@
         </div>
     </div>
 
-    <div id="share-modal" class="modal fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50">
-            <div class="bg-white rounded-lg p-4 sm:p-6 max-w-md w-full mx-4">
-            <h2 class="text-xl font-semibold mb-4">Share Results</h2>
+    <div id="share-modal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto">
+            <div class="bg-white rounded-lg p-4 sm:p-6 max-w-md w-full mx-4 my-4 max-h-screen md:max-h-[90vh] overflow-y-auto">
+            <h2 class="text-xl font-semibold mb-4 sticky top-0 bg-white pt-2 pb-2">Share Results</h2>
             <div class="mb-4">
                 <p class="text-sm text-gray-600 mb-2">Copy the link below to share with players:</p>
                 <div class="flex">
@@ -626,9 +626,9 @@
     </button>
 
         <!-- Game Details Edit Modal -->
-        <div id="game-details-modal" class="modal fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50">
-            <div class="bg-white rounded-lg p-6 max-w-2xl w-full mx-4">
-                <h2 class="text-xl font-semibold mb-4">Edit Game Details</h2>
+        <div id="game-details-modal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto">
+            <div class="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 my-4 max-h-screen md:max-h-[90vh] overflow-y-auto">
+                <h2 class="text-xl font-semibold mb-4 sticky top-0 bg-white pt-2 pb-2">Edit Game Details</h2>
                 
                 <div class="mb-6 border-b pb-6">
                     <h3 class="font-medium mb-3">Schedule Settings</h3>
@@ -701,7 +701,7 @@
                     <label class="block text-gray-700 text-sm font-medium mb-2">Notes</label>
                     <textarea id="edit-notes" class="w-full p-2 border rounded" rows="3"></textarea>
                 </div>
-                <div class="flex justify-end space-x-2">
+                <div class="flex justify-end space-x-2 sticky bottom-0 bg-white pt-2">
                     <button id="cancel-game-details" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">Cancel</button>
                     <button id="save-game-details" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">Save Changes</button>
                 </div>
@@ -710,9 +710,9 @@
     </div>
 
     <!-- Create a new modal for editing individual game details -->
-    <div id="edit-single-game-modal" class="modal fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50">
-        <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-            <h2 class="text-xl font-semibold mb-4">Edit Game Details</h2>
+    <div id="edit-single-game-modal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto">
+        <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 my-4 max-h-screen md:max-h-[90vh] overflow-y-auto">
+            <h2 class="text-xl font-semibold mb-4 sticky top-0 bg-white pt-2 pb-2">Edit Game Details</h2>
             <input type="hidden" id="edit-game-day">
             
             <div class="mb-4">
@@ -761,7 +761,7 @@
                 <textarea id="edit-game-notes" class="w-full p-2 border rounded" rows="3"></textarea>
             </div>
             
-            <div class="flex justify-end mt-6">
+            <div class="flex justify-end mt-6 sticky bottom-0 bg-white pt-2">
                 <button id="cancel-edit-game" class="bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400 mr-2">Cancel</button>
                 <button id="save-edit-game" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">Save Changes</button>
             </div>
