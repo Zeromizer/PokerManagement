@@ -954,6 +954,16 @@
                 };
                 localStorage.setItem('debug_users', JSON.stringify(debugUsers));
                 
+                // First load existing data to prevent overwriting
+                const savedData = localStorage.getItem('pokerAppData');
+                if (savedData) {
+                    try {
+                        appData = JSON.parse(savedData);
+                    } catch (e) {
+                        console.error("Error parsing saved data:", e);
+                    }
+                }
+                
                 // Add user to players list if they don't exist already
                 const playerExists = appData.players.some(player => player.email === email);
                 if (!playerExists) {
@@ -963,7 +973,8 @@
                         email: email,
                         phone: ""
                     });
-                    saveData();
+                    // Save only to localStorage in debug mode
+                    localStorage.setItem('pokerAppData', JSON.stringify(appData));
                 }
                 
                 isAdmin = isAdminRegistration;
@@ -1009,7 +1020,18 @@
                     console.log("Display name updated");
                     isAdmin = isAdminRegistration;
                     
-                    // Add user to players list if they don't exist already
+                    // First, load existing data from Firebase to prevent overwriting
+                    return database.ref('appData').once('value');
+                })
+                .then((snapshot) => {
+                    // If data exists in Firebase, use it
+                    const firebaseData = snapshot.val();
+                    if (firebaseData) {
+                        console.log("Loaded existing app data from Firebase");
+                        appData = firebaseData;
+                    }
+                    
+                    // Now add the new player to the existing data
                     const playerExists = appData.players.some(player => player.email === email);
                     if (!playerExists) {
                         appData.players.push({
@@ -1018,7 +1040,9 @@
                             email: email,
                             phone: ""
                         });
-                        saveData();
+                        
+                        // Save the updated data
+                        saveDataToFirebase();
                     }
                     
                     // Save login state to localStorage
