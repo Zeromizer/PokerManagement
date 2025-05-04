@@ -180,7 +180,7 @@
                     <div class="border rounded-lg p-4 hover:shadow-md transition">
                         <h3 class="font-medium">Monday Night</h3>
                         <p class="text-sm text-gray-600 mb-2">8:00 PM - 12:00 AM</p>
-                        <p class="text-sm mb-3">Players: <span id="monday-seats">0</span>/10+</p>
+                        <p class="text-sm mb-3">Players: <span id="monday-seats">0</span></p>
                         <p class="text-xs text-gray-500 mb-2">(Players beyond 10 are reserves)</p>
                         <button class="book-game w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700" data-day="monday">Book Seat</button>
                         
@@ -210,7 +210,7 @@
                     <div class="border rounded-lg p-4 hover:shadow-md transition">
                         <h3 class="font-medium">Wednesday Night</h3>
                         <p class="text-sm text-gray-600 mb-2">8:00 PM - 12:00 AM</p>
-                        <p class="text-sm mb-3">Players: <span id="wednesday-seats">0</span>/10+</p>
+                        <p class="text-sm mb-3">Players: <span id="wednesday-seats">0</span></p>
                         <p class="text-xs text-gray-500 mb-2">(Players beyond 10 are reserves)</p>
                         <button class="book-game w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700" data-day="wednesday">Book Seat</button>
                         
@@ -240,7 +240,7 @@
                     <div class="border rounded-lg p-4 hover:shadow-md transition">
                         <h3 class="font-medium">Saturday Afternoon</h3>
                         <p class="text-sm text-gray-600 mb-2">2:00 PM - 6:00 PM</p>
-                        <p class="text-sm mb-3">Players: <span id="saturday-seats">0</span>/10+</p>
+                        <p class="text-sm mb-3">Players: <span id="saturday-seats">0</span></p>
                         <p class="text-xs text-gray-500 mb-2">(Players beyond 10 are reserves)</p>
                         <button class="book-game w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700" data-day="saturday">Book Seat</button>
                         
@@ -1569,7 +1569,7 @@
                 
                 // Update player count - no limit on players now
                 const regularPlayerCount = gamePlayers.length;
-                seatsCounter.textContent = regularPlayerCount + "/10+";  // Show "10+" to indicate we can exceed 10
+                seatsCounter.textContent = regularPlayerCount;  // Show only the player count number
                 
                 // Update players list with visual indication of reserves
                 gamePlayers.forEach((playerId, index) => {
