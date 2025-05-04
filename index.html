@@ -909,6 +909,137 @@
                 });
         }
 
+        function register(name, email, password, isAdminRegistration, adminCode) {
+            const registerError = document.getElementById('register-error');
+            registerError.classList.add('hidden');
+            
+            // Basic validation
+            if (!name || !email || !password) {
+                registerError.textContent = "Please fill in all required fields";
+                registerError.classList.remove('hidden');
+                return;
+            }
+            
+            // Check if admin code is correct if attempting admin registration
+            if (isAdminRegistration && adminCode !== ADMIN_CODE) {
+                registerError.textContent = "Invalid admin code";
+                registerError.classList.remove('hidden');
+                return;
+            }
+            
+            // Debug mode registration - bypass Firebase
+            if (DEBUG_MODE) {
+                console.log("DEBUG MODE: Bypassing Firebase auth for registration");
+                
+                // Simulated user
+                currentUser = {
+                    uid: "debug-user-id-" + Date.now(),
+                    email: email,
+                    displayName: name,
+                    updateProfile: () => Promise.resolve()
+                };
+                
+                // Save mock user data
+                if (!localStorage.getItem('debug_users')) {
+                    localStorage.setItem('debug_users', JSON.stringify({}));
+                }
+                
+                const debugUsers = JSON.parse(localStorage.getItem('debug_users'));
+                debugUsers[email] = {
+                    uid: currentUser.uid,
+                    email: email,
+                    name: name,
+                    isAdmin: isAdminRegistration,
+                    createdAt: new Date().toISOString()
+                };
+                localStorage.setItem('debug_users', JSON.stringify(debugUsers));
+                
+                // Add user to players list if they don't exist already
+                const playerExists = appData.players.some(player => player.email === email);
+                if (!playerExists) {
+                    appData.players.push({
+                        id: Date.now().toString(),
+                        name: name,
+                        email: email,
+                        phone: ""
+                    });
+                    saveData();
+                }
+                
+                isAdmin = isAdminRegistration;
+                
+                // Save login state to localStorage
+                localStorage.setItem('pokerAppLoggedIn', 'true');
+                localStorage.setItem('pokerAppUserEmail', email);
+                localStorage.setItem('pokerAppIsAdmin', isAdmin.toString());
+                
+                updateUIForUserRole();
+                showApp();
+                return;
+            }
+            
+            // Show loading state
+            const registerButton = document.getElementById('register-button');
+            const originalText = registerButton.textContent;
+            registerButton.textContent = "Creating Account...";
+            registerButton.disabled = true;
+            
+            // Normal Firebase registration
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    console.log("User created successfully");
+                    currentUser = userCredential.user;
+                    
+                    // Save additional user data to the database
+                    return database.ref('users/' + currentUser.uid).set({
+                        name: name,
+                        email: email,
+                        isAdmin: isAdminRegistration,
+                        createdAt: new Date().toISOString()
+                    });
+                })
+                .then(() => {
+                    console.log("User data saved to database");
+                    // Update display name
+                    return currentUser.updateProfile({
+                        displayName: name
+                    });
+                })
+                .then(() => {
+                    console.log("Display name updated");
+                    isAdmin = isAdminRegistration;
+                    
+                    // Add user to players list if they don't exist already
+                    const playerExists = appData.players.some(player => player.email === email);
+                    if (!playerExists) {
+                        appData.players.push({
+                            id: Date.now().toString(),
+                            name: name,
+                            email: email,
+                            phone: ""
+                        });
+                        saveData();
+                    }
+                    
+                    // Save login state to localStorage
+                    localStorage.setItem('pokerAppLoggedIn', 'true');
+                    localStorage.setItem('pokerAppUserEmail', email);
+                    localStorage.setItem('pokerAppIsAdmin', isAdmin.toString());
+                    
+                    updateUIForUserRole();
+                    showApp();
+                })
+                .catch((error) => {
+                    console.error("Registration error:", error);
+                    registerError.textContent = error.message;
+                    registerError.classList.remove('hidden');
+                    
+                    // Reset button
+                    registerButton.textContent = originalText;
+                    registerButton.disabled = false;
+                });
+        }
+
         function logout() {
             // Clear login state from localStorage
             localStorage.removeItem('pokerAppLoggedIn');
